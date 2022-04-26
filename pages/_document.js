@@ -41,15 +41,7 @@ class MyDocument extends Document {
           <meta property="twitter:image" content="https://cdn.chec.io/email/assets/marketing/demo-preview.png" />
           <meta property="twitter:description" content="High quality Blast Analytics merchandise delivered straight to your door!" />
           <meta name="twitter:card" content="summary_large_image" />
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-              })(window,document,'script','dataLayer','GTM-MXWTTGX');`,
-            }}
-          />
+          <script src="https://assets.adobedtm.com/a5bd983fc228/7fd799f96891/launch-d573a93812fa-development.min.js" async></script>
         </Head>
         <body>
           <Main />
