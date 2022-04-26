@@ -131,9 +131,9 @@ const devtools = (process.browser && window.__REDUX_DEVTOOLS_EXTENSION__)
 //Analytics middleware for GTM
 const analyticsMiddleware = () => next => action => {
   const sendEvents = (...events) => {
-    const dataLayer = window.dataLayer || [];
-    dataLayer.push(...events);
-    window.dataLayer = dataLayer;
+    const adobeDataLayer = window.adobeDataLayer || [];
+    adobeDataLayer.push(...events);
+    window.adobeDataLayer = adobeDataLayer;
   };
   
   const { type, payload } = action;
