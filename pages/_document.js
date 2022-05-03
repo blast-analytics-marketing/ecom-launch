@@ -41,7 +41,7 @@ class MyDocument extends Document {
           <meta property="twitter:image" content="https://cdn.chec.io/email/assets/marketing/demo-preview.png" />
           <meta property="twitter:description" content="High quality Blast Analytics merchandise delivered straight to your door!" />
           <meta name="twitter:card" content="summary_large_image" />
-          <script src="https://assets.adobedtm.com/a5bd983fc228/7fd799f96891/launch-d573a93812fa-development.min.js" async></script>
+          <script src={process.env.LAUNCH_URL} async></script>
         </Head>
         <body>
           <Main />
