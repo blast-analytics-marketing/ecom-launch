@@ -42,7 +42,6 @@ class MyDocument extends Document {
           <meta property="twitter:description" content="High quality Blast Analytics merchandise delivered straight to your door!" />
           <meta name="twitter:card" content="summary_large_image" />
           <script src={process.env.LAUNCH_URL} async></script>
-          <script src="https://assets.adobedtm.com/a5bd983fc228/d5ef8aae454b/launch-ff5dab6493aa-development.min.js" async></script>
         </Head>
         <body>
           <Main />
