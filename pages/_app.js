@@ -9,15 +9,7 @@ import { setCustomer } from '../store/actions/authenticateActions';
 import 'swiper/components/effect-fade/effect-fade.scss';
 import { useRouter } from 'next/router'
 import { route } from 'next/dist/server/router';
-import { virtualPageView } from '../store/actions/analyticsActions';
-
-const gtmVirtualPageView = (rest) => {
-  window.dataLayer?.push({
-    event: 'virtualPageView',
-    _clear: true,
-    ...rest,
-  });
-};
+import { virtualPageView } from '../store/actions/analyticsActions';s
 
 const MyApp = ({Component, pageProps}) => {
 
