@@ -35,7 +35,15 @@ export const virtualPageView = (pageProps) => {
  * Send the view item list, product data
  */
 export const viewItemList = (products, list) => {
-  const productListItems = products.map((
+  const ecomObj =  {
+    commerce: {
+      productListViews: {
+        value: 1,
+      }
+    },
+    productListItems: []
+  };
+  ecomObj.productListItems = products.map((
     {
       name,
       id,
@@ -63,8 +71,8 @@ export const viewItemList = (products, list) => {
   return {
     type: TRACK_VIEW_ITEM_LIST,
     payload: {
-      event: "product_impressions",
-      productListItems,
+      event: "product_list_view",
+      ...ecomObj,
     },
   }
 }
