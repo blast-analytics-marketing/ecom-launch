@@ -154,7 +154,7 @@ const analyticsMiddleware = () => next => action => {
     case "TRACK_ADD_PAYMENT_INFO":
     case "TRACK_PURCHASE":
     case "TRACK_SELECT_PROMOTION":
-      sendEvents({...{ecommerce: null}});
+      sendEvents({...{commerce: null, productListItems: null}});
       sendEvents({...payload});
       break;
     case "TRACK_NAVIGATION_CLICK":

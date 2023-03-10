@@ -38,6 +38,8 @@ export const viewItemList = (products, list) => {
   const ecomObj =  {
     commerce: {
       productListViews: {
+        //id: list.id,
+        name: list.name,
         value: 1,
       }
     },
@@ -91,10 +93,20 @@ export const trackViewItemList = (products, list) => (dispatch) => {
  * Send the select item, product data
  */
 export const trackSelectItem = (products, position, list) => {
-  const ecomObj =  {
-    items: []
-  };
-  ecomObj.items = products.map((
+  const ecomObj = {
+    commerce: {
+      _blastamamerptrsd: {
+        productClicks: {
+          //id: products[0].id,
+          list_id: list.id,
+          list_name: list.name,
+          value: 1
+        }
+      }
+    },
+    productListItems: []
+  }
+  ecomObj.productListItems = products.map((
     {
       name,
       id,
@@ -103,25 +115,27 @@ export const trackSelectItem = (products, position, list) => {
       variant_groups,
     }
   ) => {
+
     const prod =  {
-      item_id: id,
-      item_name: name,
-      currency: 'USD',
-      index: position,
-      item_brand: "Blast",
-      price: parseFloat(price.formatted),
-      item_variant: `${variant_groups[0]?.name}: ${variant_groups[0]?.options[0]?.name}`,
-      item_list_id: list.id,
-      item_list_name: list.name,
+      SKU: id,
+      name: name,
+      currencyCode: 'USD',
+      priceTotal: parseFloat(price.formatted),
+      selectedOptions: [
+        {
+          attribute: `${variant_groups[0]?.name}`,
+          value: `${variant_groups[0]?.options[0]?.name}`
+        }
+      ],
+      categories,
     };
-    categories.forEach((cat, i) => prod[i > 0 ? `item_category${i+1}` : 'item_category'] = cat.name);
     return prod;
   });
   return {
     type: TRACK_SELECT_ITEM,
     payload: {
-      event: "select_item",
-      ecommerce: ecomObj,
+      event: "product_click",
+      ...ecomObj,
     },
   }
 }
@@ -132,23 +146,34 @@ export const trackSelectItem = (products, position, list) => {
 export const trackViewItem = (product) => {
   const { name, id, price, categories, variant_groups } = product;
   const ecomObj =  {
-    items: []
+    commerce: {
+      productViews: {
+        //id: id,
+        name: name,
+        value: 1,
+      }
+    },
+    productListItems: []
   };
-  const prod = {
-    item_id: id,
-    item_name: name,
-    currency: 'USD',
-    item_brand: "Blast",
-    price: parseFloat(price.formatted),
-    item_variant: `${variant_groups[0]?.name}: ${variant_groups[0]?.options[0]?.name}`,
+  const prod =  {
+    SKU: id,
+    name: name,
+    currencyCode: 'USD',
+    priceTotal: parseFloat(price.formatted),
+    selectedOptions: [
+      {
+        attribute: `${variant_groups[0]?.name}`,
+        value: `${variant_groups[0]?.options[0]?.name}`
+      }
+    ],
+    categories,
   };
-  categories.forEach((cat, i) => prod[i > 0 ? `item_category${i+1}` : 'item_category'] = cat.name);
-  ecomObj.items.push(prod);
+  ecomObj.productListItems.push(prod);
   return {
     type: TRACK_VIEW_ITEM,
     payload: {
-      event: "view_item",
-      ecommerce: ecomObj,
+      event: "product_view",
+      ...ecomObj,
     },
   }
 }
@@ -174,24 +199,29 @@ export const trackAddToCart = (product, quantity, selected_options) => {
     variant = createVariantFromGroups(selected_options);
   }
   const ecomObj =  {
-    items: []
+    commerce: {
+      productListAdds: {
+        //id: id,
+        name: name,
+        value: 1,
+      }
+    },
+    productListItems: []
   };
-  const prod = {
-    item_id: id,
-    item_name: name,
-    currency: 'USD',
-    item_brand: "Blast",
-    price: parseFloat(price.formatted),
-    item_variant: variant,
-    quantity
+  const prod =  {
+    SKU: id,
+    name: name,
+    currencyCode: 'USD',
+    priceTotal: parseFloat(price.formatted),
+    quantity: quantity,
+    categories,
   };
-  categories.forEach((cat, i) => prod[i > 0 ? `item_category${i+1}` : 'item_category'] = cat.name);
-  ecomObj.items.push(prod);
+  ecomObj.productListItems.push(prod);
   return {
     type: TRACK_ADD_TO_CART,
     payload: {
       event: "add_to_cart",
-      ecommerce: ecomObj,
+      ...ecomObj,
     },
   }
 }
@@ -202,24 +232,29 @@ export const trackAddToCart = (product, quantity, selected_options) => {
 export const trackRemoveFromCart = (product, quantity, selected_options) => {
   const { name, id, price, categories } = product;
   const ecomObj =  {
-    items: []
+    commerce: {
+      productListRemovals: {
+        //id: id,
+        name: name,
+        value: 1,
+      }
+    },
+    productListItems: []
   };
-  const prod = {
-    item_id: id,
-    item_name: name,
-    currency: 'USD',
-    item_brand: "Blast",
-    price: parseFloat(price.formatted),
-    item_variant: selected_options.map(({group_name, option_name}) => `${group_name}: ${option_name}`).sort().join(),
-    quantity
+  const prod =  {
+    SKU: id,
+    name: name,
+    currencyCode: 'USD',
+    priceTotal: parseFloat(price.formatted),
+    quantity: quantity,
+    categories,
   };
-  categories.forEach((cat, i) => prod[i > 0 ? `item_category${i+1}` : 'item_category'] = cat.name);
-  ecomObj.items.push(prod);
+  ecomObj.productListItems.push(prod);
   return {
     type: TRACK_REMOVE_FROM_CART,
     payload: {
       event: "remove_from_cart",
-      ecommerce: ecomObj,
+      ...ecomObj,
     },
   }
 }
@@ -228,37 +263,48 @@ export const trackRemoveFromCart = (product, quantity, selected_options) => {
  * Send the view cart, product data
  */
 export const trackViewCart = (products, cart_id) => {
-  const ecomObj =  {
-    cart_id,
-    items: []
-  };
-  ecomObj.items = products.map((
+  const ecomObj = {
+    commerce: {
+      productListViews: {
+        value: 1
+      },
+      cart: {
+        cardID: cart_id,
+      }
+    }
+  }
+  ecomObj.productListItems = products.map((
     {
       name,
       id,
       price,
       quantity,
       categories,
-      selected_options,
-    }
+      variant_groups,
+    },
+    index
   ) => {
     const prod =  {
-      item_id: id,
-      item_name: name,
-      currency: 'USD',
-      item_brand: "Blast",
-      price: parseFloat(price.formatted),
-      item_variant: selected_options.map(({group_name, option_name}) => `${group_name}: ${option_name}`).sort().join(),
-      quantity
+      SKU: id,
+      name: name,
+      currencyCode: 'USD',
+      priceTotal: parseFloat(price.formatted),
+      quantity: quantity,
+      selectedOptions: [
+        {
+          attribute: `${selected_options[0]?.group_name}`,
+          value: `${selected_options[0]?.option_name}`
+        }
+      ],
+      categories,
     };
-    categories.forEach((cat, i) => prod[i > 0 ? `item_category${i+1}` : 'item_category'] = cat.name);
     return prod;
   });
   return {
     type: TRACK_VIEW_CART,
     payload: {
-      event: "view_cart",
-      ecommerce: ecomObj,
+      event: "product_list_view",
+      ...ecomObj,
     },
   }
 }
@@ -268,36 +314,49 @@ export const trackViewCart = (products, cart_id) => {
  */
 export const trackBeginCheckout = (products, cart_id) => {
   const ecomObj =  {
-    cart_id,
-    items: []
+    commerce: {
+      checkouts: {
+        id: cart_id,
+        name: "Begin Checkout",
+        value: 1,
+      },
+      cart: {
+        cartID: cart_id,
+      }
+    },
+    productListItems: []
   };
-  ecomObj.items = products.map((
+  ecomObj.productListItems = products.map((
     {
       name,
       id,
       price,
       quantity,
       categories,
-      selected_options,
+      variant_groups,
     }
   ) => {
     const prod =  {
-      item_id: id,
-      item_name: name,
-      currency: 'USD',
-      item_brand: "Blast",
-      price: parseFloat(price.formatted),
-      item_variant: selected_options.map(({group_name, option_name}) => `${group_name}: ${option_name}`).sort().join(),
-      quantity
+      SKU: id,
+      name: name,
+      currencyCode: 'USD',
+      priceTotal: parseFloat(price.formatted),
+      quantity: quantity,
+      selectedOptions: [
+        {
+          attribute: `${variant_groups[0]?.name}`,
+          value: `${variant_groups[0]?.options[0]?.name}`
+        }
+      ],
+      categories,
     };
-    categories.forEach((cat, i) => prod[i > 0 ? `item_category${i+1}` : 'item_category'] = cat.name);
     return prod;
   });
   return {
     type: TRACK_BEGIN_CHECKOUT,
     payload: {
-      event: "begin_checkout",
-      ecommerce: ecomObj,
+      event: "checkout",
+      ...ecomObj,
     },
   }
 }
@@ -308,37 +367,52 @@ export const trackBeginCheckout = (products, cart_id) => {
 export const trackAddShippingInfo = (products, cart_id, shipping_tier) => {
   const { description, price } = shipping_tier;
   const ecomObj =  {
-    shipping_tier: `${description} - ${price.formatted_with_code}`,
-    cart_id,
-    items: []
+    commerce: {
+      _blastamamerptrsd: {
+        addShippingInfo: {
+          value: 1,
+        }
+      },
+      shipping: {
+        shippingMethod: `${description} - ${price.formatted_with_code}`,
+      },
+      cart: {
+        cartID: cart_id,
+      }
+    },
+    productListItems: []
   };
-  ecomObj.items = products.map((
+  ecomObj.productListItems = products.map((
     {
       name,
       id,
       price,
       quantity,
       categories,
-      selected_options,
+      variant_groups,
     }
   ) => {
     const prod =  {
-      item_id: id,
-      item_name: name,
-      currency: 'USD',
-      item_brand: "Blast",
-      price: parseFloat(price.formatted),
-      item_variant: selected_options.map(({group_name, option_name}) => `${group_name}: ${option_name}`).sort().join(),
-      quantity
+      SKU: id,
+      name: name,
+      currencyCode: 'USD',
+      priceTotal: parseFloat(price.formatted),
+      quantity: quantity,
+      selectedOptions: [
+        {
+          attribute: `${variant_groups[0]?.name}`,
+          value: `${variant_groups[0]?.options[0]?.name}`
+        }
+      ],
+      categories,
     };
-    categories.forEach((cat, i) => prod[i > 0 ? `item_category${i+1}` : 'item_category'] = cat.name);
     return prod;
   });
   return {
     type: TRACK_ADD_SHIPPING_INFO,
     payload: {
       event: "add_shipping_info",
-      ecommerce: ecomObj,
+      ...ecomObj,
     },
   }
 }
@@ -348,36 +422,49 @@ export const trackAddShippingInfo = (products, cart_id, shipping_tier) => {
  */
 export const trackAddPaymentInfo = (products, cart_id) => {
   const ecomObj =  {
-    cart_id,
-    items: []
+    commerce: {
+      _blastamamerptrsd: {
+        addPaymentInfo: {
+          value: 1,
+        }
+      },
+      cart: {
+        cartID: cart_id,
+      }
+    },
+    productListItems: []
   };
-  ecomObj.items = products.map((
+  ecomObj.productListItems = products.map((
     {
       name,
       id,
       price,
       quantity,
       categories,
-      selected_options,
+      variant_groups,
     }
   ) => {
     const prod =  {
-      item_id: id,
-      item_name: name,
-      currency: 'USD',
-      item_brand: "Blast",
-      price: parseFloat(price.formatted),
-      item_variant: selected_options.map(({group_name, option_name}) => `${group_name}: ${option_name}`).sort().join(),
-      quantity
+      SKU: id,
+      name: name,
+      currencyCode: 'USD',
+      priceTotal: parseFloat(price.formatted),
+      quantity: quantity,
+      selectedOptions: [
+        {
+          attribute: `${variant_groups[0]?.name}`,
+          value: `${variant_groups[0]?.options[0]?.name}`
+        }
+      ],
+      categories,
     };
-    categories.forEach((cat, i) => prod[i > 0 ? `item_category${i+1}` : 'item_category'] = cat.name);
     return prod;
   });
   return {
     type: TRACK_ADD_PAYMENT_INFO,
     payload: {
       event: "add_payment_info",
-      ecommerce: ecomObj,
+      ...ecomObj,
     },
   }
 }
@@ -386,22 +473,29 @@ export const trackAddPaymentInfo = (products, cart_id) => {
  * Send the purchase, product data
  */
 export const trackPurchase = (products, orderReceipt) => {
-  const ecomObj =  {
-    currency: 'USD',
-    value: parseFloat(orderReceipt.order_value.formatted),
-    coupon: orderReceipt.order.discount.code,
-    payment_type: orderReceipt.transactions.map(trans => {
-      return trans.payment_source.brand
-    }).sort().join(),
-    shipping_tier: `${orderReceipt.order.shipping.description} - ${orderReceipt.order.shipping.price.formatted}`,
-    transaction_id: orderReceipt.id,
-    affiliation: orderReceipt.merchant.business_name,
-    tax: parseFloat(orderReceipt.tax.amount.formatted),
-    shipping: parseFloat(orderReceipt.order.shipping.price.formatted),
-    cart_id: orderReceipt.cart_id,
-    items: []
-  };
-  ecomObj.items = products.map((
+  console.log('orderReceipt', orderReceipt);
+  const ecomObj = {
+    commerce: {
+      purchases: {
+        id: orderReceipt.id,
+        value: 1,
+      },
+      order: {
+        payments: orderReceipt.transactions.map(trans => {
+          return {
+            currencyCode: 'USD',
+            paymentAmount: parseFloat(trans.amount.formatted),
+            paymentType: trans.payment_source_type,
+            transactionID: trans.id
+          }
+        }),
+        currencyCode: 'USD',
+        priceTotal: parseFloat(orderReceipt.order_value.formatted),
+        purchaseID: orderReceipt.id,
+      }
+    }
+  }
+  ecomObj.productListItems = products.map((
     {
       name,
       id,
@@ -412,22 +506,26 @@ export const trackPurchase = (products, orderReceipt) => {
     }
   ) => {
     const prod =  {
-      item_id: id,
-      item_name: name,
-      currency: 'USD',
-      item_brand: "Blast",
-      price: parseFloat(price.formatted),
-      item_variant: selected_options.map(({group_name, option_name}) => `${group_name}: ${option_name}`).sort().join(),
-      quantity
+      SKU: id,
+      name: name,
+      currencyCode: 'USD',
+      priceTotal: parseFloat(price.formatted),
+      quantity: quantity,
+      selectedOptions: [
+        {
+          attribute: `${selected_options[0]?.group_name}`,
+          value: `${selected_options[0]?.option_name}`
+        }
+      ],
+      categories,
     };
-    categories.forEach((cat, i) => prod[i > 0 ? `item_category${i+1}` : 'item_category'] = cat.name);
     return prod;
   });
   return {
     type: TRACK_PURCHASE,
     payload: {
       event: "purchase",
-      ecommerce: ecomObj,
+      ...ecomObj,
     },
   }
 }
