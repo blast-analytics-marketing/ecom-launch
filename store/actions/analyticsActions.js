@@ -397,24 +397,18 @@ export const trackAddPaymentInfo = (products, cart_id) => {
 export const trackPurchase = (products, orderReceipt) => {
   console.log('orderReceipt', orderReceipt);
   const ecomObj = {
-    commerce: {
-      purchases: {
-        id: orderReceipt.id,
-        value: 1,
-      },
-      order: {
-        payments: orderReceipt.transactions.map(trans => {
-          return {
-            currencyCode: 'USD',
-            paymentAmount: parseFloat(trans.amount.formatted),
-            paymentType: trans.payment_source_type,
-            transactionID: trans.id
-          }
-        }),
-        currencyCode: 'USD',
-        priceTotal: parseFloat(orderReceipt.order_value.formatted),
-        purchaseID: orderReceipt.id,
-      }
+    order: {
+      payments: orderReceipt.transactions.map(trans => {
+        return {
+          currencyCode: 'USD',
+          paymentAmount: parseFloat(trans.amount.formatted),
+          paymentType: trans.payment_source_type,
+          transactionID: trans.id
+        }
+      }),
+      currencyCode: 'USD',
+      priceTotal: parseFloat(orderReceipt.order_value.formatted),
+      purchaseID: orderReceipt.id,
     }
   }
   ecomObj.productListItems = products.map((
