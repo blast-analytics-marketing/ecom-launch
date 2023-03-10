@@ -15,6 +15,7 @@ const MyApp = ({Component, pageProps}) => {
 
   const store = useStore(pageProps.initialState);
   const [stripePromise, setStripePromise] = useState(null);
+  const [pageLoadedOnce, setPageLoadedOnce] = useState(false);
   const router = useRouter()
 
   useEffect(() => {
@@ -30,18 +31,22 @@ const MyApp = ({Component, pageProps}) => {
       pageData = {
         page_name: 'View Order',
         page_category: 'Account',
-        page_url: router.pathname,
-        page_title: 'View Order | Blast Analytics | Store',
+        // page_url: router.pathname,
+        // page_title: 'View Order | Blast Analytics | Store',
       };
     } else {
       pageData = {
         page_name: pageProps.page || null,
         page_category: pageProps.category || null,
-        page_url: router.pathname,
-        page_title: pageProps.title,
+        // page_url: router.pathname,
+        // page_title: pageProps.title,
       };
     }
-    store.dispatch(virtualPageView(pageData))
+    if(pageLoadedOnce) {
+      console.log('virtual page view')
+      store.dispatch(virtualPageView(pageData))
+    }
+    setPageLoadedOnce(true);
 
 
   }, [pageProps])

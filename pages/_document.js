@@ -41,6 +41,43 @@ class MyDocument extends Document {
           <meta property="twitter:image" content="https://cdn.chec.io/email/assets/marketing/demo-preview.png" />
           <meta property="twitter:description" content="High quality Blast Analytics merchandise delivered straight to your door!" />
           <meta name="twitter:card" content="summary_large_image" />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+              var adobeDataLayer = [];
+              var pdpRegex = new RegExp('^\/product\/(.*)\/?$', 'i');
+              if(window.location.pathname === '/') {
+                  adobeDataLayer.push({
+                    page_name: 'Home',
+                    page_category: 'Content',
+                  });
+                } else if(window.location.pathname === '/about') {
+                  adobeDataLayer.push({
+                    page_name: 'About',
+                    page_category: 'Content',
+                  });
+                } else if(window.location.pathname === '/collection') {
+                  adobeDataLayer.push({
+                    page_name: 'Shop All',
+                    page_category: 'PLP',
+                  });
+                } else if(pdpRegex.test(window.location.pathname)) {
+                  var urlParts = window.location.pathname.split('/');
+                  var pageName = urlParts[2].split('-').map(item => item.charAt(0).toUpperCase() + item.slice(1)).join(' ');
+                  adobeDataLayer.push({
+                    page_name: pageName,
+                    page_category: 'PDP',
+                  });
+                } else if(window.location.pathname === '/login') {
+                  adobeDataLayer.push({
+                    page_name: 'Login',
+                    page_category: 'Account',
+                  });
+                }
+                console.log("initial data layer definition", JSON.parse(JSON.stringify(adobeDataLayer)))
+              `,
+            }}
+          />
           <script src={process.env.LAUNCH_URL} async></script>
         </Head>
         <body>
