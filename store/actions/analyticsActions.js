@@ -26,7 +26,7 @@ export const virtualPageView = (pageProps) => {
     type: VIRTUAL_PAGE_VIEW,
     payload: {
       event: "virtual_page_view",
-      page: pageProps,
+      ...pageProps,
     },
   }
 }
@@ -36,13 +36,6 @@ export const virtualPageView = (pageProps) => {
  */
 export const viewItemList = (products, list) => {
   const ecomObj =  {
-    commerce: {
-      productListViews: {
-        //id: list.id,
-        name: list.name,
-        value: 1,
-      }
-    },
     productListItems: []
   };
   ecomObj.productListItems = products.map((
@@ -60,12 +53,12 @@ export const viewItemList = (products, list) => {
       name: name,
       currencyCode: 'USD',
       priceTotal: parseFloat(price.formatted),
-      selectedOptions: [
-        {
-          attribute: `${variant_groups[0]?.name}`,
-          value: `${variant_groups[0]?.options[0]?.name}`
-        }
-      ],
+      // selectedOptions: [
+      //   {
+      //     attribute: `${variant_groups[0]?.name}`,
+      //     value: `${variant_groups[0]?.options[0]?.name}`
+      //   }
+      // ],
       categories,
     };
     return prod;
@@ -94,16 +87,6 @@ export const trackViewItemList = (products, list) => (dispatch) => {
  */
 export const trackSelectItem = (products, position, list) => {
   const ecomObj = {
-    commerce: {
-      _blastamamerptrsd: {
-        productClicks: {
-          //id: products[0].id,
-          list_id: list.id,
-          list_name: list.name,
-          value: 1
-        }
-      }
-    },
     productListItems: []
   }
   ecomObj.productListItems = products.map((
@@ -121,12 +104,12 @@ export const trackSelectItem = (products, position, list) => {
       name: name,
       currencyCode: 'USD',
       priceTotal: parseFloat(price.formatted),
-      selectedOptions: [
-        {
-          attribute: `${variant_groups[0]?.name}`,
-          value: `${variant_groups[0]?.options[0]?.name}`
-        }
-      ],
+      // selectedOptions: [
+      //   {
+      //     attribute: `${variant_groups[0]?.name}`,
+      //     value: `${variant_groups[0]?.options[0]?.name}`
+      //   }
+      // ],
       categories,
     };
     return prod;
@@ -146,13 +129,6 @@ export const trackSelectItem = (products, position, list) => {
 export const trackViewItem = (product) => {
   const { name, id, price, categories, variant_groups } = product;
   const ecomObj =  {
-    commerce: {
-      productViews: {
-        //id: id,
-        name: name,
-        value: 1,
-      }
-    },
     productListItems: []
   };
   const prod =  {
@@ -160,12 +136,12 @@ export const trackViewItem = (product) => {
     name: name,
     currencyCode: 'USD',
     priceTotal: parseFloat(price.formatted),
-    selectedOptions: [
-      {
-        attribute: `${variant_groups[0]?.name}`,
-        value: `${variant_groups[0]?.options[0]?.name}`
-      }
-    ],
+    // selectedOptions: [
+    //   {
+    //     attribute: `${variant_groups[0]?.name}`,
+    //     value: `${variant_groups[0]?.options[0]?.name}`
+    //   }
+    // ],
     categories,
   };
   ecomObj.productListItems.push(prod);
@@ -199,13 +175,6 @@ export const trackAddToCart = (product, quantity, selected_options) => {
     variant = createVariantFromGroups(selected_options);
   }
   const ecomObj =  {
-    commerce: {
-      productListAdds: {
-        //id: id,
-        name: name,
-        value: 1,
-      }
-    },
     productListItems: []
   };
   const prod =  {
@@ -232,13 +201,6 @@ export const trackAddToCart = (product, quantity, selected_options) => {
 export const trackRemoveFromCart = (product, quantity, selected_options) => {
   const { name, id, price, categories } = product;
   const ecomObj =  {
-    commerce: {
-      productListRemovals: {
-        //id: id,
-        name: name,
-        value: 1,
-      }
-    },
     productListItems: []
   };
   const prod =  {
@@ -264,14 +226,7 @@ export const trackRemoveFromCart = (product, quantity, selected_options) => {
  */
 export const trackViewCart = (products, cart_id) => {
   const ecomObj = {
-    commerce: {
-      productListViews: {
-        value: 1
-      },
-      cart: {
-        cardID: cart_id,
-      }
-    }
+    productListItems: []
   }
   ecomObj.productListItems = products.map((
     {
@@ -290,12 +245,12 @@ export const trackViewCart = (products, cart_id) => {
       currencyCode: 'USD',
       priceTotal: parseFloat(price.formatted),
       quantity: quantity,
-      selectedOptions: [
-        {
-          attribute: `${selected_options[0]?.group_name}`,
-          value: `${selected_options[0]?.option_name}`
-        }
-      ],
+      // selectedOptions: [
+      //   {
+      //     attribute: `${selected_options[0]?.group_name}`,
+      //     value: `${selected_options[0]?.option_name}`
+      //   }
+      // ],
       categories,
     };
     return prod;
@@ -303,7 +258,7 @@ export const trackViewCart = (products, cart_id) => {
   return {
     type: TRACK_VIEW_CART,
     payload: {
-      event: "product_list_view",
+      event: "view_cart",
       ...ecomObj,
     },
   }
@@ -314,16 +269,6 @@ export const trackViewCart = (products, cart_id) => {
  */
 export const trackBeginCheckout = (products, cart_id) => {
   const ecomObj =  {
-    commerce: {
-      checkouts: {
-        id: cart_id,
-        name: "Begin Checkout",
-        value: 1,
-      },
-      cart: {
-        cartID: cart_id,
-      }
-    },
     productListItems: []
   };
   ecomObj.productListItems = products.map((
@@ -342,12 +287,12 @@ export const trackBeginCheckout = (products, cart_id) => {
       currencyCode: 'USD',
       priceTotal: parseFloat(price.formatted),
       quantity: quantity,
-      selectedOptions: [
-        {
-          attribute: `${variant_groups[0]?.name}`,
-          value: `${variant_groups[0]?.options[0]?.name}`
-        }
-      ],
+      // selectedOptions: [
+      //   {
+      //     attribute: `${variant_groups[0]?.name}`,
+      //     value: `${variant_groups[0]?.options[0]?.name}`
+      //   }
+      // ],
       categories,
     };
     return prod;
@@ -367,19 +312,6 @@ export const trackBeginCheckout = (products, cart_id) => {
 export const trackAddShippingInfo = (products, cart_id, shipping_tier) => {
   const { description, price } = shipping_tier;
   const ecomObj =  {
-    commerce: {
-      _blastamamerptrsd: {
-        addShippingInfo: {
-          value: 1,
-        }
-      },
-      shipping: {
-        shippingMethod: `${description} - ${price.formatted_with_code}`,
-      },
-      cart: {
-        cartID: cart_id,
-      }
-    },
     productListItems: []
   };
   ecomObj.productListItems = products.map((
@@ -398,12 +330,12 @@ export const trackAddShippingInfo = (products, cart_id, shipping_tier) => {
       currencyCode: 'USD',
       priceTotal: parseFloat(price.formatted),
       quantity: quantity,
-      selectedOptions: [
-        {
-          attribute: `${variant_groups[0]?.name}`,
-          value: `${variant_groups[0]?.options[0]?.name}`
-        }
-      ],
+      // selectedOptions: [
+      //   {
+      //     attribute: `${variant_groups[0]?.name}`,
+      //     value: `${variant_groups[0]?.options[0]?.name}`
+      //   }
+      // ],
       categories,
     };
     return prod;
@@ -422,16 +354,6 @@ export const trackAddShippingInfo = (products, cart_id, shipping_tier) => {
  */
 export const trackAddPaymentInfo = (products, cart_id) => {
   const ecomObj =  {
-    commerce: {
-      _blastamamerptrsd: {
-        addPaymentInfo: {
-          value: 1,
-        }
-      },
-      cart: {
-        cartID: cart_id,
-      }
-    },
     productListItems: []
   };
   ecomObj.productListItems = products.map((
@@ -450,12 +372,12 @@ export const trackAddPaymentInfo = (products, cart_id) => {
       currencyCode: 'USD',
       priceTotal: parseFloat(price.formatted),
       quantity: quantity,
-      selectedOptions: [
-        {
-          attribute: `${variant_groups[0]?.name}`,
-          value: `${variant_groups[0]?.options[0]?.name}`
-        }
-      ],
+      // selectedOptions: [
+      //   {
+      //     attribute: `${variant_groups[0]?.name}`,
+      //     value: `${variant_groups[0]?.options[0]?.name}`
+      //   }
+      // ],
       categories,
     };
     return prod;
@@ -511,12 +433,12 @@ export const trackPurchase = (products, orderReceipt) => {
       currencyCode: 'USD',
       priceTotal: parseFloat(price.formatted),
       quantity: quantity,
-      selectedOptions: [
-        {
-          attribute: `${selected_options[0]?.group_name}`,
-          value: `${selected_options[0]?.option_name}`
-        }
-      ],
+      // selectedOptions: [
+      //   {
+      //     attribute: `${selected_options[0]?.group_name}`,
+      //     value: `${selected_options[0]?.option_name}`
+      //   }
+      // ],
       categories,
     };
     return prod;
