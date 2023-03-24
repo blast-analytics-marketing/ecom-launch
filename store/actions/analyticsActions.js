@@ -411,32 +411,32 @@ export const trackPurchase = (products, orderReceipt) => {
       purchaseID: orderReceipt.id,
     }
   }
-  ecomObj.productListItems = products.map((
-    {
-      name,
-      id,
-      price,
-      quantity,
-      categories,
-      selected_options,
-    }
-  ) => {
-    const prod =  {
-      SKU: id,
-      name: name,
-      currencyCode: 'USD',
-      priceTotal: parseFloat(price.formatted),
-      quantity: quantity,
-      // selectedOptions: [
-      //   {
-      //     attribute: `${selected_options[0]?.group_name}`,
-      //     value: `${selected_options[0]?.option_name}`
-      //   }
-      // ],
-      categories,
-    };
-    return prod;
-  });
+  // ecomObj.productListItems = products.map((
+  //   {
+  //     name,
+  //     id,
+  //     price,
+  //     quantity,
+  //     categories,
+  //     selected_options,
+  //   }
+  // ) => {
+  //   const prod =  {
+  //     SKU: id,
+  //     name: name,
+  //     currencyCode: 'USD',
+  //     priceTotal: parseFloat(price.formatted),
+  //     quantity: quantity,
+  //     // selectedOptions: [
+  //     //   {
+  //     //     attribute: `${selected_options[0]?.group_name}`,
+  //     //     value: `${selected_options[0]?.option_name}`
+  //     //   }
+  //     // ],
+  //     categories,
+  //   };
+  //   return prod;
+  // });
   return {
     type: TRACK_PURCHASE,
     payload: {
