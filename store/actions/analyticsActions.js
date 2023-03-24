@@ -60,6 +60,20 @@ export const viewItemList = (products, list) => {
       //   }
       // ],
       categories,
+      _experience: {
+        analytics: {
+          customDimensions: {
+            eVars: {
+              eVar5: name
+            }
+          },
+          event1to100: {
+            event2: {
+              value: 1
+            }
+          }
+        }
+      }
     };
     return prod;
   });
@@ -111,6 +125,15 @@ export const trackSelectItem = (products, position, list) => {
       //   }
       // ],
       categories,
+      _experience: {
+        analytics: {
+          customDimensions: {
+            eVars: {
+              eVar5: name
+            }
+          }
+        }
+      }
     };
     return prod;
   });
@@ -143,6 +166,15 @@ export const trackViewItem = (product) => {
     //   }
     // ],
     categories,
+    _experience: {
+      analytics: {
+        customDimensions: {
+          eVars: {
+            eVar5: name
+          }
+        }
+      }
+    }
   };
   ecomObj.productListItems.push(prod);
   return {
@@ -184,6 +216,15 @@ export const trackAddToCart = (product, quantity, selected_options) => {
     priceTotal: parseFloat(price.formatted),
     quantity: quantity,
     categories,
+    _experience: {
+      analytics: {
+        customDimensions: {
+          eVars: {
+            eVar5: name
+          }
+        }
+      }
+    }
   };
   ecomObj.productListItems.push(prod);
   return {
@@ -210,6 +251,15 @@ export const trackRemoveFromCart = (product, quantity, selected_options) => {
     priceTotal: parseFloat(price.formatted),
     quantity: quantity,
     categories,
+    _experience: {
+      analytics: {
+        customDimensions: {
+          eVars: {
+            eVar5: name
+          }
+        }
+      }
+    }
   };
   ecomObj.productListItems.push(prod);
   return {
@@ -252,6 +302,15 @@ export const trackViewCart = (products, cart_id) => {
       //   }
       // ],
       categories,
+      _experience: {
+        analytics: {
+          customDimensions: {
+            eVars: {
+              eVar5: name
+            }
+          }
+        }
+      }
     };
     return prod;
   });
@@ -294,6 +353,15 @@ export const trackBeginCheckout = (products, cart_id) => {
       //   }
       // ],
       categories,
+      _experience: {
+        analytics: {
+          customDimensions: {
+            eVars: {
+              eVar5: name
+            }
+          }
+        }
+      }
     };
     return prod;
   });
@@ -337,6 +405,15 @@ export const trackAddShippingInfo = (products, cart_id, shipping_tier) => {
       //   }
       // ],
       categories,
+      _experience: {
+        analytics: {
+          customDimensions: {
+            eVars: {
+              eVar5: name
+            }
+          }
+        }
+      }
     };
     return prod;
   });
@@ -379,6 +456,15 @@ export const trackAddPaymentInfo = (products, cart_id) => {
       //   }
       // ],
       categories,
+      _experience: {
+        analytics: {
+          customDimensions: {
+            eVars: {
+              eVar5: name
+            }
+          }
+        }
+      }
     };
     return prod;
   });
@@ -434,6 +520,15 @@ export const trackPurchase = (products, orderReceipt) => {
       //   }
       // ],
       categories,
+      _experience: {
+        analytics: {
+          customDimensions: {
+            eVars: {
+              eVar5: name
+            }
+          }
+        }
+      }
     };
     return prod;
   });
