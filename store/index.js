@@ -140,7 +140,7 @@ const analyticsMiddleware = () => next => action => {
 
   switch(type) {
     case "VIRTUAL_PAGE_VIEW":
-      sendEvents({...{page: null}});
+      sendEvents({...{page_name: null, page_category: null}});
       sendEvents({...payload});
       break;
     case "TRACK_VIEW_ITEM_LIST":
