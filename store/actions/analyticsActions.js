@@ -59,12 +59,13 @@ export const viewItemList = (products, list) => {
       //     value: `${variant_groups[0]?.options[0]?.name}`
       //   }
       // ],
-      categories,
+      category: categories[0]?.name,
       _experience: {
         analytics: {
           customDimensions: {
             eVars: {
-              eVar5: name
+              eVar5: name,
+              eVar6: categories[0]?.name
             }
           },
           event1to100: {
@@ -124,12 +125,13 @@ export const trackSelectItem = (products, position, list) => {
       //     value: `${variant_groups[0]?.options[0]?.name}`
       //   }
       // ],
-      categories,
+      category: categories[0]?.name,
       _experience: {
         analytics: {
           customDimensions: {
             eVars: {
-              eVar5: name
+              eVar5: name,
+              eVar6: categories[0]?.name
             }
           }
         }
@@ -165,12 +167,13 @@ export const trackViewItem = (product) => {
     //     value: `${variant_groups[0]?.options[0]?.name}`
     //   }
     // ],
-    categories,
+    category: categories[0]?.name,
     _experience: {
       analytics: {
         customDimensions: {
           eVars: {
-            eVar5: name
+            eVar5: name,
+            eVar6: categories[0]?.name
           }
         }
       }
@@ -215,12 +218,13 @@ export const trackAddToCart = (product, quantity, selected_options) => {
     currencyCode: 'USD',
     priceTotal: parseFloat(price.formatted),
     quantity: quantity,
-    categories,
+    category: categories[0]?.name,
     _experience: {
       analytics: {
         customDimensions: {
           eVars: {
-            eVar5: name
+            eVar5: name,
+            eVar6: categories[0]?.name
           }
         }
       }
@@ -250,12 +254,13 @@ export const trackRemoveFromCart = (product, quantity, selected_options) => {
     currencyCode: 'USD',
     priceTotal: parseFloat(price.formatted),
     quantity: quantity,
-    categories,
+    category: categories[0]?.name,
     _experience: {
       analytics: {
         customDimensions: {
           eVars: {
-            eVar5: name
+            eVar5: name,
+            eVar6: categories[0]?.name
           }
         }
       }
@@ -301,12 +306,13 @@ export const trackViewCart = (products, cart_id) => {
       //     value: `${selected_options[0]?.option_name}`
       //   }
       // ],
-      categories,
+      category: categories[0]?.name,
       _experience: {
         analytics: {
           customDimensions: {
             eVars: {
-              eVar5: name
+              eVar5: name,
+              eVar6: categories[0]?.name
             }
           }
         }
@@ -352,12 +358,13 @@ export const trackBeginCheckout = (products, cart_id) => {
       //     value: `${variant_groups[0]?.options[0]?.name}`
       //   }
       // ],
-      categories,
+      category: categories[0]?.name,
       _experience: {
         analytics: {
           customDimensions: {
             eVars: {
-              eVar5: name
+              eVar5: name,
+              eVar6: categories[0]?.name
             }
           }
         }
@@ -404,12 +411,13 @@ export const trackAddShippingInfo = (products, cart_id, shipping_tier) => {
       //     value: `${variant_groups[0]?.options[0]?.name}`
       //   }
       // ],
-      categories,
+      category: categories[0]?.name,
       _experience: {
         analytics: {
           customDimensions: {
             eVars: {
-              eVar5: name
+              eVar5: name,
+              eVar6: categories[0]?.name
             }
           }
         }
@@ -455,12 +463,13 @@ export const trackAddPaymentInfo = (products, cart_id) => {
       //     value: `${variant_groups[0]?.options[0]?.name}`
       //   }
       // ],
-      categories,
+      category: categories[0]?.name,
       _experience: {
         analytics: {
           customDimensions: {
             eVars: {
-              eVar5: name
+              eVar5: name,
+              eVar6: categories[0]?.name
             }
           }
         }
@@ -519,12 +528,13 @@ export const trackPurchase = (products, orderReceipt) => {
       //     value: `${selected_options[0]?.option_name}`
       //   }
       // ],
-      categories,
+      category: categories[0]?.name,
       _experience: {
         analytics: {
           customDimensions: {
             eVars: {
-              eVar5: name
+              eVar5: name,
+              eVar6: categories[0]?.name
             }
           }
         }
