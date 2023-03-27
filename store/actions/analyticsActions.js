@@ -80,7 +80,7 @@ export const viewItemList = (products, list) => {
   return {
     type: TRACK_VIEW_ITEM_LIST,
     payload: {
-      event: "product_list_view",
+      event: "product_impressions",
       ...ecomObj,
     },
   }
