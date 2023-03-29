@@ -53,28 +53,13 @@ export const viewItemList = (products, list) => {
       name: name,
       currencyCode: 'USD',
       priceTotal: parseFloat(price.formatted),
-      // selectedOptions: [
-      //   {
-      //     attribute: `${variant_groups[0]?.name}`,
-      //     value: `${variant_groups[0]?.options[0]?.name}`
-      //   }
-      // ],
-      category: categories[0]?.name,
-      _experience: {
-        analytics: {
-          customDimensions: {
-            eVars: {
-              eVar5: name,
-              eVar6: categories[0]?.name
-            }
-          },
-          event1to100: {
-            event2: {
-              value: 1
-            }
-          }
+      selectedOptions: [
+        {
+          attribute: `${variant_groups[0]?.name}`,
+          value: `${variant_groups[0]?.options[0]?.name}`
         }
-      }
+      ],
+      category: categories[0]?.name,
     };
     return prod;
   });
@@ -119,23 +104,13 @@ export const trackSelectItem = (products, position, list) => {
       name: name,
       currencyCode: 'USD',
       priceTotal: parseFloat(price.formatted),
-      // selectedOptions: [
-      //   {
-      //     attribute: `${variant_groups[0]?.name}`,
-      //     value: `${variant_groups[0]?.options[0]?.name}`
-      //   }
-      // ],
-      category: categories[0]?.name,
-      _experience: {
-        analytics: {
-          customDimensions: {
-            eVars: {
-              eVar5: name,
-              eVar6: categories[0]?.name
-            }
-          }
+      selectedOptions: [
+        {
+          attribute: `${variant_groups[0]?.name}`,
+          value: `${variant_groups[0]?.options[0]?.name}`
         }
-      }
+      ],
+      category: categories[0]?.name,
     };
     return prod;
   });
@@ -161,23 +136,13 @@ export const trackViewItem = (product) => {
     name: name,
     currencyCode: 'USD',
     priceTotal: parseFloat(price.formatted),
-    // selectedOptions: [
-    //   {
-    //     attribute: `${variant_groups[0]?.name}`,
-    //     value: `${variant_groups[0]?.options[0]?.name}`
-    //   }
-    // ],
-    category: categories[0]?.name,
-    _experience: {
-      analytics: {
-        customDimensions: {
-          eVars: {
-            eVar5: name,
-            eVar6: categories[0]?.name
-          }
-        }
+    selectedOptions: [
+      {
+        attribute: `${variant_groups[0]?.name}`,
+        value: `${variant_groups[0]?.options[0]?.name}`
       }
-    }
+    ],
+    category: categories[0]?.name,
   };
   ecomObj.productListItems.push(prod);
   return {
@@ -201,11 +166,21 @@ export const trackAddToCart = (product, quantity, selected_options) => {
     const variant_name = variant?.name;
     const variant_option = variant?.options.find(option => option.id === variant_option_id);
     const variant_option_name = variant_option?.name;
-    return `${variant_name}: ${variant_option_name}`
+    return [
+      {
+        attribute: variant_name,
+        value: variant_option_name
+      }
+    ];
   }
   let variant = '';
   if(selected_options[0]?.group_name) {
-    variant = selected_options.map(({group_name, option_name}) => `${group_name}: ${option_name}`).sort().join();
+    variant = selected_options.map(({group_name, option_name}) => {
+      return {
+        attribute: group_name,
+        value: option_name
+      }
+    });
   } else {
     variant = createVariantFromGroups(selected_options);
   }
@@ -218,17 +193,8 @@ export const trackAddToCart = (product, quantity, selected_options) => {
     currencyCode: 'USD',
     priceTotal: parseFloat(price.formatted),
     quantity: quantity,
+    selectedOptions: variant,
     category: categories[0]?.name,
-    _experience: {
-      analytics: {
-        customDimensions: {
-          eVars: {
-            eVar5: name,
-            eVar6: categories[0]?.name
-          }
-        }
-      }
-    }
   };
   ecomObj.productListItems.push(prod);
   return {
@@ -244,6 +210,8 @@ export const trackAddToCart = (product, quantity, selected_options) => {
  * Send the removeFromCart, product data
  */
 export const trackRemoveFromCart = (product, quantity, selected_options) => {
+  console.log(product)
+  console.log(selected_options)
   const { name, id, price, categories } = product;
   const ecomObj =  {
     productListItems: []
@@ -254,17 +222,13 @@ export const trackRemoveFromCart = (product, quantity, selected_options) => {
     currencyCode: 'USD',
     priceTotal: parseFloat(price.formatted),
     quantity: quantity,
-    category: categories[0]?.name,
-    _experience: {
-      analytics: {
-        customDimensions: {
-          eVars: {
-            eVar5: name,
-            eVar6: categories[0]?.name
-          }
-        }
+    selectedOptions: [
+      {
+        attribute: `${selected_options[0]?.group_name}`,
+        value: `${selected_options[0]?.option_name}`
       }
-    }
+    ],
+    category: categories[0]?.name,
   };
   ecomObj.productListItems.push(prod);
   return {
@@ -300,23 +264,13 @@ export const trackViewCart = (products, cart_id) => {
       currencyCode: 'USD',
       priceTotal: parseFloat(price.formatted),
       quantity: quantity,
-      // selectedOptions: [
-      //   {
-      //     attribute: `${selected_options[0]?.group_name}`,
-      //     value: `${selected_options[0]?.option_name}`
-      //   }
-      // ],
-      category: categories[0]?.name,
-      _experience: {
-        analytics: {
-          customDimensions: {
-            eVars: {
-              eVar5: name,
-              eVar6: categories[0]?.name
-            }
-          }
+      selectedOptions: [
+        {
+          attribute: `${variant_groups[0]?.name}`,
+          value: `${variant_groups[0]?.options[0]?.name}`
         }
-      }
+      ],
+      category: categories[0]?.name,
     };
     return prod;
   });
@@ -352,23 +306,13 @@ export const trackBeginCheckout = (products, cart_id) => {
       currencyCode: 'USD',
       priceTotal: parseFloat(price.formatted),
       quantity: quantity,
-      // selectedOptions: [
-      //   {
-      //     attribute: `${variant_groups[0]?.name}`,
-      //     value: `${variant_groups[0]?.options[0]?.name}`
-      //   }
-      // ],
-      category: categories[0]?.name,
-      _experience: {
-        analytics: {
-          customDimensions: {
-            eVars: {
-              eVar5: name,
-              eVar6: categories[0]?.name
-            }
-          }
+      selectedOptions: [
+        {
+          attribute: `${variant_groups[0]?.name}`,
+          value: `${variant_groups[0]?.options[0]?.name}`
         }
-      }
+      ],
+      category: categories[0]?.name,
     };
     return prod;
   });
@@ -405,23 +349,13 @@ export const trackAddShippingInfo = (products, cart_id, shipping_tier) => {
       currencyCode: 'USD',
       priceTotal: parseFloat(price.formatted),
       quantity: quantity,
-      // selectedOptions: [
-      //   {
-      //     attribute: `${variant_groups[0]?.name}`,
-      //     value: `${variant_groups[0]?.options[0]?.name}`
-      //   }
-      // ],
-      category: categories[0]?.name,
-      _experience: {
-        analytics: {
-          customDimensions: {
-            eVars: {
-              eVar5: name,
-              eVar6: categories[0]?.name
-            }
-          }
+      selectedOptions: [
+        {
+          attribute: `${variant_groups[0]?.name}`,
+          value: `${variant_groups[0]?.options[0]?.name}`
         }
-      }
+      ],
+      category: categories[0]?.name,
     };
     return prod;
   });
@@ -457,23 +391,13 @@ export const trackAddPaymentInfo = (products, cart_id) => {
       currencyCode: 'USD',
       priceTotal: parseFloat(price.formatted),
       quantity: quantity,
-      // selectedOptions: [
-      //   {
-      //     attribute: `${variant_groups[0]?.name}`,
-      //     value: `${variant_groups[0]?.options[0]?.name}`
-      //   }
-      // ],
-      category: categories[0]?.name,
-      _experience: {
-        analytics: {
-          customDimensions: {
-            eVars: {
-              eVar5: name,
-              eVar6: categories[0]?.name
-            }
-          }
+      selectedOptions: [
+        {
+          attribute: `${variant_groups[0]?.name}`,
+          value: `${variant_groups[0]?.options[0]?.name}`
         }
-      }
+      ],
+      category: categories[0]?.name,
     };
     return prod;
   });
@@ -522,23 +446,13 @@ export const trackPurchase = (products, orderReceipt) => {
       currencyCode: 'USD',
       priceTotal: parseFloat(price.formatted),
       quantity: quantity,
-      // selectedOptions: [
-      //   {
-      //     attribute: `${selected_options[0]?.group_name}`,
-      //     value: `${selected_options[0]?.option_name}`
-      //   }
-      // ],
-      category: categories[0]?.name,
-      _experience: {
-        analytics: {
-          customDimensions: {
-            eVars: {
-              eVar5: name,
-              eVar6: categories[0]?.name
-            }
-          }
+      selectedOptions: [
+        {
+          attribute: `${selected_options[0]?.group_name}`,
+          value: `${selected_options[0]?.option_name}`
         }
-      }
+      ],
+      category: categories[0]?.name,
     };
     return prod;
   });
