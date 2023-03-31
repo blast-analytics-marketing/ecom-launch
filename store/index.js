@@ -160,22 +160,20 @@ const analyticsMiddleware = () => next => action => {
       sendEvents({...{order: null, productListItems: null}});
       sendEvents({...payload});
       break;
-    case "TRACK_NAVIGATION_CLICK":
+    // case "TRACK_NAVIGATION_CLICK":
     case "TRACK_LOGIN":
       sendEvents({...payload});
       break;
     case "SET_CUSTOMER":
-      sendEvents({...{user: null}});
+      sendEvents({...{user_id: null, logged_in: null}});
       sendEvents({
         event: "load_user_data",
-        user: {
-          user_id: payload.id,
-          logged_in: payload.isLoggedIn,
-        }
+        user_id: payload.id,
+        logged_in: payload.isLoggedIn,
       });
       break;
     case "CLEAR_CUSTOMER":
-      sendEvents({...{user: null}});
+      sendEvents({...{user_id: null, logged_in: null}});
       break;
     default:
       break;
